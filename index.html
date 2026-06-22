@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IPCheck — What is my IP?</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #0a0c10;
+      --surface:  #12151c;
+      --border:   #1e2330;
+      --accent:   #00d4aa;
+      --accent2:  #0090ff;
+      --text:     #e8eaf0;
+      --muted:    #6b7280;
+      --mono:     "IBM Plex Mono", monospace;
+      --sans:     "Inter", sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── NAV ── */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 2rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .logo {
+      font-family: var(--mono);
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: var(--accent);
+      letter-spacing: -0.02em;
+    }
+    .logo span { color: var(--text); }
+    nav a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.875rem;
+      transition: color 0.15s;
+    }
+    nav a:hover { color: var(--text); }
+
+    /* ── HERO ── */
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 4rem 1.5rem;
+      gap: 3rem;
+    }
+
+    .hero {
+      text-align: center;
+      max-width: 560px;
+    }
+    .eyebrow {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+    h1 {
+      font-size: clamp(2rem, 6vw, 3.5rem);
+      font-weight: 600;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      margin-bottom: 1rem;
+    }
+    .subtitle {
+      color: var(--muted);
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+
+    /* ── IP CARD ── */
+    .ip-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2rem 2.5rem;
+      text-align: center;
+      min-width: 320px;
+      max-width: 480px;
+      width: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+    .ip-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 0%, rgba(0,212,170,0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .ip-label {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+    .ip-value {
+      font-family: var(--mono);
+      font-size: clamp(1.4rem, 5vw, 2.4rem);
+      font-weight: 600;
+      color: var(--accent);
+      letter-spacing: -0.02em;
+      min-height: 2.8rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+    .ip-value.loading { color: var(--muted); animation: pulse 1.4s ease-in-out infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+    .meta {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin-top: 1.25rem;
+      flex-wrap: wrap;
+    }
+    .meta-item {
+      font-size: 0.75rem;
+      color: var(--muted);
+      font-family: var(--mono);
+    }
+    .meta-item strong { color: var(--text); }
+
+    .copy-btn {
+      margin-top: 1.5rem;
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 0.875rem;
+      font-weight: 500;
+      padding: 0.6rem 1.4rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: border-color 0.15s, color 0.15s, background 0.15s;
+    }
+    .copy-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .copy-btn.copied { border-color: var(--accent); color: var(--accent); background: rgba(0,212,170,0.07); }
+
+    /* ── API SECTION ── */
+    .api-section {
+      width: 100%;
+      max-width: 680px;
+    }
+    .section-title {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+    .endpoints {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .endpoint {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .method {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      font-weight: 600;
+      background: rgba(0,144,255,0.12);
+      color: var(--accent2);
+      border: 1px solid rgba(0,144,255,0.25);
+      border-radius: 4px;
+      padding: 0.2rem 0.5rem;
+      flex-shrink: 0;
+      margin-top: 0.1rem;
+    }
+    .endpoint-info { flex: 1; min-width: 0; }
+    .endpoint-path {
+      font-family: var(--mono);
+      font-size: 0.875rem;
+      color: var(--text);
+    }
+    .endpoint-desc {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-top: 0.3rem;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 1.5rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+    footer a { color: var(--muted); text-decoration: underline; }
+    footer a:hover { color: var(--text); }
+
+    @media (max-width: 480px) {
+      nav { padding: 1rem; }
+      .ip-card { padding: 1.5rem; min-width: 0; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">IP<span>Check</span></div>
+  <a href="/tos">Terms of Service</a>
+</nav>
+
+<main>
+  <div class="hero">
+    <div class="eyebrow">Network Utility</div>
+    <h1>What is my IP address?</h1>
+    <p class="subtitle">Instantly see your public IPv4/IPv6 address. Use the API to programmatically retrieve IP info from any app or script.</p>
+  </div>
+
+  <div class="ip-card">
+    <div class="ip-label">Your Public IP Address</div>
+    <div class="ip-value loading" id="ip-display">Fetching…</div>
+    <div class="meta" id="meta-row" style="display:none">
+      <span class="meta-item">Fetched at <strong id="ts">—</strong></span>
+    </div>
+    <button class="copy-btn" id="copy-btn" onclick="copyIP()" disabled>Copy IP</button>
+  </div>
+
+  <div class="api-section">
+    <div class="section-title">API Reference</div>
+    <div class="endpoints">
+      <div class="endpoint">
+        <span class="method">GET</span>
+        <div class="endpoint-info">
+          <div class="endpoint-path">/api/ip</div>
+          <div class="endpoint-desc">Returns IP, timestamp, and user-agent as JSON.</div>
+        </div>
+      </div>
+      <div class="endpoint">
+        <span class="method">GET</span>
+        <div class="endpoint-info">
+          <div class="endpoint-path">/api/ip/plain</div>
+          <div class="endpoint-desc">Returns bare IP as <code>text/plain</code>. Ideal for <code>curl</code>.</div>
+        </div>
+      </div>
+      <div class="endpoint">
+        <span class="method">GET</span>
+        <div class="endpoint-info">
+          <div class="endpoint-path">/api/ip/jsonp?callback=fn</div>
+          <div class="endpoint-desc">JSONP response. Pass your callback name via <code>?callback=</code>.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  &copy; 2025 IPCheck &mdash; <a href="/tos">Terms of Service</a> &mdash; This service is provided for legitimate network diagnostics only.
+</footer>
+
+<script>
+  let currentIP = null;
+
+  async function fetchIP() {
+    try {
+      const res = await fetch("/api/ip");
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      const data = await res.json();
+
+      currentIP = data.ip;
+      const display = document.getElementById("ip-display");
+      display.textContent = data.ip;
+      display.classList.remove("loading");
+
+      const ts = new Date(data.timestamp).toLocaleTimeString();
+      document.getElementById("ts").textContent = ts;
+      document.getElementById("meta-row").style.display = "flex";
+
+      const btn = document.getElementById("copy-btn");
+      btn.disabled = false;
+    } catch (err) {
+      const display = document.getElementById("ip-display");
+      display.textContent = "Error";
+      display.classList.remove("loading");
+      display.style.color = "#f87171";
+      console.error("Failed to fetch IP:", err);
+    }
+  }
+
+  function copyIP() {
+    if (!currentIP) return;
+    navigator.clipboard.writeText(currentIP).then(() => {
+      const btn = document.getElementById("copy-btn");
+      btn.textContent = "Copied!";
+      btn.classList.add("copied");
+      setTimeout(() => {
+        btn.textContent = "Copy IP";
+        btn.classList.remove("copied");
+      }, 2000);
+    }).catch(() => {
+      // Fallback for older browsers
+      const ta = document.createElement("textarea");
+      ta.value = currentIP;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      document.body.removeChild(ta);
+    });
+  }
+
+  fetchIP();
+</script>
+</body>
+</html>

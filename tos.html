@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Terms of Service — IPCheck</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:      #0a0c10;
+      --surface: #12151c;
+      --border:  #1e2330;
+      --accent:  #00d4aa;
+      --text:    #e8eaf0;
+      --muted:   #6b7280;
+      --mono:    "IBM Plex Mono", monospace;
+      --sans:    "Inter", sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 2rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .logo {
+      font-family: var(--mono);
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: var(--accent);
+      text-decoration: none;
+    }
+    .logo span { color: var(--text); }
+    nav a.back {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.875rem;
+      transition: color 0.15s;
+    }
+    nav a.back:hover { color: var(--text); }
+
+    main {
+      flex: 1;
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 4rem 1.5rem;
+      width: 100%;
+    }
+
+    .doc-header {
+      margin-bottom: 3rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .eyebrow {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+    h1 {
+      font-size: 2rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.75rem;
+    }
+    .effective {
+      font-size: 0.875rem;
+      color: var(--muted);
+      font-family: var(--mono);
+    }
+
+    .toc {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 3rem;
+    }
+    .toc-title {
+      font-size: 0.75rem;
+      font-family: var(--mono);
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+    .toc ol {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .toc li { counter-increment: toc; }
+    .toc a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.875rem;
+      transition: color 0.15s;
+    }
+    .toc a:hover { color: var(--accent); }
+    .toc a::before {
+      content: counter(toc) ". ";
+      color: var(--border);
+      font-family: var(--mono);
+    }
+
+    section {
+      margin-bottom: 2.5rem;
+    }
+    h2 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.85rem;
+      padding-top: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    h2::before {
+      content: attr(data-n);
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--accent);
+      background: rgba(0,212,170,0.1);
+      border: 1px solid rgba(0,212,170,0.2);
+      border-radius: 4px;
+      padding: 0.15rem 0.45rem;
+      flex-shrink: 0;
+    }
+    p {
+      font-size: 0.925rem;
+      line-height: 1.75;
+      color: #c0c4cc;
+      margin-bottom: 0.85rem;
+    }
+    ul {
+      padding-left: 1.25rem;
+      margin-bottom: 0.85rem;
+    }
+    li {
+      font-size: 0.925rem;
+      line-height: 1.7;
+      color: #c0c4cc;
+      margin-bottom: 0.3rem;
+    }
+    strong { color: var(--text); }
+    a { color: var(--accent); }
+
+    .highlight-box {
+      background: rgba(0,212,170,0.05);
+      border: 1px solid rgba(0,212,170,0.15);
+      border-radius: 6px;
+      padding: 0.9rem 1.1rem;
+      margin-bottom: 0.85rem;
+    }
+    .highlight-box p { margin-bottom: 0; }
+
+    footer {
+      text-align: center;
+      padding: 1.5rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+    footer a { color: var(--muted); }
+    footer a:hover { color: var(--text); }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="logo">IP<span>Check</span></a>
+  <a href="/" class="back">← Back to Home</a>
+</nav>
+
+<main>
+  <div class="doc-header">
+    <div class="eyebrow">Legal</div>
+    <h1>Terms of Service</h1>
+    <div class="effective">Effective: January 1, 2025 &nbsp;·&nbsp; Last updated: January 1, 2025</div>
+  </div>
+
+  <div class="toc">
+    <div class="toc-title">Contents</div>
+    <ol>
+      <li><a href="#acceptance">Acceptance of Terms</a></li>
+      <li><a href="#service">Service Description</a></li>
+      <li><a href="#permitted">Permitted Use</a></li>
+      <li><a href="#prohibited">Prohibited Use</a></li>
+      <li><a href="#data">Data & Privacy</a></li>
+      <li><a href="#api">API Usage</a></li>
+      <li><a href="#disclaimer">Disclaimer of Warranties</a></li>
+      <li><a href="#liability">Limitation of Liability</a></li>
+      <li><a href="#changes">Changes to Terms</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ol>
+  </div>
+
+  <section id="acceptance">
+    <h2 data-n="01">Acceptance of Terms</h2>
+    <p>By accessing or using IPCheck (the "Service"), you agree to be bound by these Terms of Service. If you do not agree to these terms, do not use the Service.</p>
+    <p>These terms apply to all users of the Service, including users of the website and the API.</p>
+  </section>
+
+  <section id="service">
+    <h2 data-n="02">Service Description</h2>
+    <p>IPCheck is a network diagnostic utility that allows users to identify their public IP address as seen by external servers. The Service provides:</p>
+    <ul>
+      <li>A web interface for viewing your current public IP address</li>
+      <li>A JSON API endpoint for programmatic IP retrieval (<code>/api/ip</code>)</li>
+      <li>A plain-text API endpoint for shell and scripting use (<code>/api/ip/plain</code>)</li>
+      <li>A JSONP endpoint for cross-origin browser integrations (<code>/api/ip/jsonp</code>)</li>
+    </ul>
+  </section>
+
+  <section id="permitted">
+    <h2 data-n="03">Permitted Use</h2>
+    <p>You may use IPCheck for the following <strong>legitimate purposes</strong>:</p>
+    <ul>
+      <li>Diagnosing your own network configuration or connectivity</li>
+      <li>Verifying VPN, proxy, or firewall behavior</li>
+      <li>Integrating IP detection into your own applications or services</li>
+      <li>Automated scripts that check your outbound IP at a reasonable frequency</li>
+      <li>Educational and research purposes related to networking</li>
+    </ul>
+  </section>
+
+  <section id="prohibited">
+    <h2 data-n="04">Prohibited Use</h2>
+    <div class="highlight-box">
+      <p><strong>This Service must not be used for any unlawful, harmful, or deceptive purpose.</strong></p>
+    </div>
+    <p>The following uses are strictly prohibited:</p>
+    <ul>
+      <li>Attempting to identify, track, or surveil other users without their explicit consent</li>
+      <li>Using the Service in connection with any harassment, stalking, or abuse</li>
+      <li>Circumventing legal processes or law enforcement</li>
+      <li>Sending automated requests at a rate that degrades service for other users</li>
+      <li>Using the Service to facilitate unauthorized access to computer systems</li>
+      <li>Scraping or storing data from this Service to build profiling databases</li>
+      <li>Any use that violates applicable local, national, or international laws</li>
+    </ul>
+    <p>We reserve the right to block access from any IP address that violates these terms without notice.</p>
+  </section>
+
+  <section id="data">
+    <h2 data-n="05">Data & Privacy</h2>
+    <p>IPCheck processes your IP address solely to return it to you. We do not:</p>
+    <ul>
+      <li>Persistently store IP addresses or request logs</li>
+      <li>Sell or share your data with third parties</li>
+      <li>Use your IP address for advertising or tracking</li>
+    </ul>
+    <p>Transient, in-memory processing of your IP address occurs during each request and is not retained beyond the response. Standard server infrastructure may maintain temporary access logs for operational security purposes, subject to retention limits.</p>
+  </section>
+
+  <section id="api">
+    <h2 data-n="06">API Usage</h2>
+    <p>The API is provided for reasonable programmatic use. You agree to:</p>
+    <ul>
+      <li>Implement appropriate caching to minimize unnecessary requests</li>
+      <li>Not exceed reasonable rate limits (more than one request per second sustained is considered abusive)</li>
+      <li>Identify your application with a descriptive <code>User-Agent</code> header where practical</li>
+    </ul>
+    <p>We may impose rate limits or access controls at any time to ensure service availability for all users.</p>
+  </section>
+
+  <section id="disclaimer">
+    <h2 data-n="07">Disclaimer of Warranties</h2>
+    <p>The Service is provided <strong>"as is"</strong> and <strong>"as available"</strong> without warranties of any kind, express or implied, including but not limited to warranties of merchantability, fitness for a particular purpose, or non-infringement.</p>
+    <p>We do not warrant that the Service will be uninterrupted, error-free, or that the IP address returned will be accurate in all network configurations (e.g., CGNAT, shared proxies, corporate networks).</p>
+  </section>
+
+  <section id="liability">
+    <h2 data-n="08">Limitation of Liability</h2>
+    <p>To the maximum extent permitted by law, IPCheck and its operators shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising from your use of or inability to use the Service.</p>
+    <p>Our total liability for any claim related to the Service shall not exceed the amount you paid to use the Service in the twelve months preceding the claim (which, as this is a free service, is zero).</p>
+  </section>
+
+  <section id="changes">
+    <h2 data-n="09">Changes to Terms</h2>
+    <p>We reserve the right to modify these Terms at any time. Changes will be reflected by updating the "Last updated" date at the top of this page. Continued use of the Service after changes constitutes acceptance of the updated Terms.</p>
+  </section>
+
+  <section id="contact">
+    <h2 data-n="10">Contact</h2>
+    <p>For questions about these Terms or concerns about misuse of the Service, please open an issue or discussion on our project repository.</p>
+  </section>
+</main>
+
+<footer>
+  &copy; 2025 IPCheck &mdash; <a href="/">Home</a> &mdash; Terms of Service
+</footer>
+
+</body>
+</html>
